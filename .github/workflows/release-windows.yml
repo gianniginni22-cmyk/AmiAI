@@ -94,8 +94,9 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git restore app/main.py desktop.py packaging/AmigurumiAI.iss packaging/build_windows.ps1
-git add update-manifest.json
+           git add update-manifest.json
           git commit -m "chore: publish update manifest $version"
           git push origin HEAD:main
+
 
 
