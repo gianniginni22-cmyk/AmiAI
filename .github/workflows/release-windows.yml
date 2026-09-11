@@ -1,4 +1,4 @@
-name: Release Windows
+﻿name: Release Windows
 
 on:
   push:
@@ -96,3 +96,4 @@ jobs:
           git add core008/update-manifest.json
           git commit -m "chore: publish update manifest $version" || exit 0
           git push origin HEAD:main
+
