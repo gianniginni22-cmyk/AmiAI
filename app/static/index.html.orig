@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Amigurumi AI Designer</title>
+<style>
+:root{--bg:#f7f4ef;--card:#fff;--ink:#282421;--muted:#756e67;--line:#e4ddd5;--accent:#7048ff;--soft:#eee9ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:#fff;border-bottom:1px solid var(--line);padding:20px 4vw}.brand{font-size:25px;font-weight:900}.sub{color:var(--muted);margin-left:8px}
+main{max-width:1250px;margin:25px auto;padding:0 18px}.grid{display:grid;grid-template-columns:350px 1fr;gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 8px 28px #00000008}
+label{display:block;font-weight:800;margin:14px 0 7px}input,textarea,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+.drop{border:2px dashed #c8bfb6;padding:25px 10px;text-align:center;border-radius:14px;cursor:pointer;color:var(--muted)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}button{border:0;border-radius:10px;padding:11px 14px;font-weight:800;cursor:pointer}.primary{background:var(--accent);color:#fff;width:100%;margin-top:16px}.ghost{background:#eeeae6}
+.status{color:var(--muted);font-size:13px}.progress{height:8px;background:#eee9e4;border-radius:99px;margin-top:12px;overflow:hidden}.progress i{display:block;height:100%;width:0;background:var(--accent);transition:.3s}
+.top{display:grid;grid-template-columns:1fr 1fr;gap:18px}.visual{height:350px;border-radius:14px;background:#f0ece6;display:flex;align-items:center;justify-content:center;overflow:hidden}.visual img{max-width:100%;max-height:100%;object-fit:contain}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{background:var(--soft);color:#5736ca;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800}
+.spec{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.spec div{background:#f7f4f0;padding:10px;border-radius:10px}.spec b{display:block;font-size:11px;color:var(--muted)}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0 10px}.tab{background:#eeeae6}.tab.active{background:var(--ink);color:#fff}.panel{display:none}.panel.active{display:block}
+pre{white-space:pre-wrap;background:#f8f6f3;border-radius:12px;padding:15px;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;max-height:650px;overflow:auto}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.warn{background:#fff4d9;border:1px solid #f0db9b;padding:10px;border-radius:10px;font-size:13px}
+@media(max-width:850px){.grid,.top{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><span class="brand">🧶 Amigurumi AI Designer</span><span class="sub">AI → geometria → pattern</span></header>
+<main><div class="grid">
+<section class="card">
+<h2>1. Progetta</h2>
+<details style="margin-bottom:12px" open><summary style="cursor:pointer;font-weight:800">⚙ Impostazioni AI</summary>
+<label>OpenAI API key</label>
+<input id="apikey" type="password" autocomplete="off" placeholder="Incolla qui la tua chiave API (sk-…)" spellcheck="false">
+<div class="actions" style="margin-top:8px"><button class="ghost" id="savekey">Salva chiave</button><button class="ghost" id="removekey">Rimuovi</button></div>
+<p id="keystatus" class="status">La chiave viene salvata solo nella configurazione locale di questa app.</p>
+<p id="modelstatus" class="status"></p></details>
+<label>Foto del soggetto</label>
+<div class="drop" id="drop">📷 Clicca o trascina una foto</div>
+<input id="file" type="file" accept="image/*" hidden>
+<div id="filename" class="status"></div>
+<label>Descrizione</label>
+<textarea id="desc" rows="4" placeholder="Es. dinosauro verde con collo lungo, placche dorsali e coda lunga"></textarea>
+<div class="row">
+<div><label>Altezza (cm)</label><input id="height" type="number" value="15" min="5" max="80"></div>
+<div><label>Uncinetto (mm)</label><input id="hook" type="number" value="2.5" step=".5" min="1" max="8"></div>
+</div>
+<div class="row">
+<div><label>Maglie / 10 cm (campione)</label><input id="spc" type="number" value="0" min="0" max="60" step="0.5"></div>
+<div><label>Giri / 10 cm (campione)</label><input id="rpc" type="number" value="0" min="0" max="60" step="0.5"></div>
+</div><div class="row">
+<div><label>Livello</label><select id="level"><option>principiante</option><option selected>intermedio</option><option>avanzato</option></select></div>
+<div><label>Stile</label><select id="style"><option selected>fedele alla foto</option><option>più semplice</option><option>kawaii</option></select></div>
+</div>
+<button class="ghost" id="complexityBtn" style="width:100%;margin-top:14px">🔎 ANALIZZA COMPLESSITÀ</button><button class="ghost" id="decomposeBtn" style="width:100%;margin-top:8px">🧩 SCOMPONI SOGGETTO</button><button class="ghost" id="designBtn" style="width:100%;margin-top:8px">🎨 CREA CONCEPT + TEMPLATE</button><div id="designBox" class="warn" style="display:none;margin-top:10px"></div><div id="decompositionBox" class="warn" style="display:none;margin-top:10px"></div><div id="complexityBox" class="warn" style="display:none;margin-top:10px"></div><button class="primary" id="go">✨ ANALIZZA E GENERA</button>
+<div class="progress"><i id="bar"></i></div><p id="status" class="status">Senza API key usa un pattern demo; con OPENAI_API_KEY usa l'analisi multimodale.</p>
+</section>
+
+<section class="card">
+<div class="top">
+<div><h2>2. Soggetto</h2><div class="visual" id="visual">Nessuna foto</div><div id="conceptVisual" class="visual" style="margin-top:10px;height:260px;display:none"></div></div>
+<div><h2>3. Modello</h2><div id="chips" class="chips"></div><p id="summary" class="status">—</p><div id="spec" class="spec"></div>
+<div class="actions"><button class="ghost" id="txt">⬇ Pattern TXT</button><button class="ghost" id="json">⬇ Modello JSON</button><button class="ghost" id="print">🖨 PDF</button></div></div>
+</div>
+<div id="warning"></div><div id="quality" class="spec"></div>
+<div class="tabs">
+<button class="tab active" data-t="pattern">Pattern</button><button class="tab" data-t="assembly">Assemblaggio</button><button class="tab" data-t="graph">Shape Graph</button><button class="tab" data-t="parts">Parti</button><button class="tab" data-t="design">Design Model</button><button class="tab" data-t="fit">Profile Fit</button><button class="tab" data-t="pose">Depth &amp; Pose</button><button class="tab" data-t="checks">Controlli</button>
+</div>
+<div class="panel active" id="pattern"><pre id="patternText">—</pre></div>
+<div class="panel" id="assembly"><pre id="assemblyText">—</pre></div>
+<div class="panel" id="graph"><pre id="graphText">—</pre></div><div class="panel" id="parts"><pre id="partsText">—</pre></div><div class="panel" id="design"><pre id="designText">—</pre></div>
+<div class="panel" id="fit"><pre id="fitText">—</pre></div>
+<div class="panel" id="pose"><pre id="poseText">—</pre></div>
+<div class="panel" id="checks"><pre id="checksText">—</pre></div>
+</section></div></main>
+<script>
+let file=null,result=null,designModel=null,designImage=null;
+const $=x=>document.getElementById(x);
+$('drop').onclick=()=>$('file').click();
+$('file').onchange=e=>load(e.target.files[0]);
+$('drop').ondragover=e=>e.preventDefault();
+$('drop').ondrop=e=>{e.preventDefault();load(e.dataTransfer.files[0])};
+function load(f){if(!f)return;file=f;$('filename').textContent='📎 '+f.name;let r=new FileReader();r.onload=()=>{$('visual').innerHTML='<img src="'+r.result+'">'};r.readAsDataURL(f)}
+function render(r,mode,warning){
+ result=r;$('chips').innerHTML=(r.parts||[]).map(x=>`<span class="chip">${x}</span>`).join('');
+ $('summary').textContent=`${r.subject} — ${r.style_notes||''}`;
+ $('spec').innerHTML=`<div><b>Altezza</b>${r.dimensions.height_cm} cm</div><div><b>Larghezza</b>${r.dimensions.width_cm} cm</div><div><b>Profondità</b>${r.dimensions.depth_cm} cm</div><div><b>Palette</b>${(r.palette||[]).join(', ')}</div>`;
+ $('patternText').textContent=r.pattern||'';
+ $('assemblyText').textContent=r.assembly||'';
+ $('graphText').textContent=JSON.stringify(r.shape_graph||{},null,2); $('partsText').textContent=JSON.stringify(r.vision_parts||[],null,2);
+ $('fitText').textContent=r.profile_fit?JSON.stringify(r.profile_fit,null,2):'Profile Fitter non eseguito: carica una foto.';
+ $('poseText').textContent=r.depth_pose?JSON.stringify(r.depth_pose,null,2):'Depth & Pose non eseguito: carica una foto.';
+ $('checksText').textContent=(r.checks||[]).map(x=>'• '+x).join('\\n');
+ let q=r.quality||{}; let cs=(q.metrics&&q.metrics.component_scores)||{}; let labels={visione:'Visione',struttura_grafo:'Struttura',geometria:'Geometria',conteggi_maglie:'Conteggi',giunzioni:'Giunzioni',scala_target:'Scala'}; let rows=Object.keys(labels).map(k=>{let v=Math.round(cs[k]??0);return `<div style=\"margin:7px 0\"><div style=\"display:flex;justify-content:space-between\"><b>${labels[k]}</b><span>${v}%</span></div><div style=\"height:8px;background:#ddd;border-radius:5px;overflow:hidden\"><div style=\"width:${v}%;height:100%;background:currentColor\"></div></div></div>`}).join(''); $('quality').innerHTML=`<div style=\"margin-bottom:10px\"><b>Punteggio complessivo</b> ${q.score!=null?Math.round(q.score)+'%':'—'} — ${q.status||'—'}</div>${rows}`; $('warning').innerHTML=warning?`<div class="warn">⚠ ${warning}</div>`:''; if(r.complexity){let c=r.complexity;$('complexityBox').style.display='block';$('complexityBox').innerHTML='<b>Complessità rilevata: '+c.level+' — '+c.score+'/100</b><br>Confidenza: '+Math.round((c.confidence||0)*100)+'%';}
+}
+async function refreshSettings(){try{let x=await fetch('/api/settings').then(r=>r.json());$('keystatus').textContent=x.has_openai_key?'✓ Chiave configurata e pronta per l’analisi multimodale.':'Nessuna chiave configurata: verrà usata la modalità demo.';$('modelstatus').textContent='Modello: '+x.model}catch(e){$('keystatus').textContent='Impossibile leggere le impostazioni.'}}
+refreshSettings();
+$('savekey').onclick=async()=>{let key=$('apikey').value.trim();if(!key){$('keystatus').textContent='Inserisci una chiave API prima di salvarla.';return}let fd=new FormData();fd.append('openai_api_key',key);let r=await fetch('/api/settings',{method:'POST',body:fd});let x=await r.json();$('keystatus').textContent=x.has_openai_key?'✓ Chiave salvata localmente.':'Chiave rimossa.';$('apikey').value='';$('modelstatus').textContent='Modello: '+(x.model||'gpt-5.6-luna')};
+$('removekey').onclick=async()=>{let fd=new FormData();fd.append('openai_api_key','');let r=await fetch('/api/settings',{method:'POST',body:fd});let x=await r.json();$('keystatus').textContent='Chiave rimossa. La prossima analisi userà la modalità demo.';$('apikey').value=''};
+
+$('designBtn').onclick=async()=>{
+ $('designBtn').disabled=true;$('designBtn').textContent='⏳ Creo concept + template…';$('designBox').style.display='block';$('designBox').textContent='Identifico il soggetto, preparo le quattro viste tecniche e costruisco il Design Model…';
+ let fd=new FormData();fd.append('description',$('desc').value);fd.append('height_cm',$('height').value);fd.append('style',$('style').value);if(file)fd.append('image',file);
+ try{let res=await fetch('/api/design',{method:'POST',body:fd});let data=await res.json();designModel=data.result||null;designImage=data.concept_image||null;
+   let d=designModel||{}; let views=(d.views||[]).map(v=>'• '+v.orientation+': '+(v.visible_parts||[]).join(', ')).join('<br>');
+   $('designBox').innerHTML='<b>Soggetto: '+(d.subject||'—')+'</b><br>Confidenza: '+Math.round((d.overall_confidence||0)*100)+'%<br><br><b>Viste tecniche</b><br>'+views+(data.warning?'<br><br>⚠ '+data.warning:'');
+   if(designImage){$('conceptVisual').style.display='flex';$('conceptVisual').innerHTML='<img src="'+designImage+'">';}
+ }catch(e){$('designBox').textContent='Errore Design Model: '+e.message}
+ finally{$('designBtn').disabled=false;$('designBtn').textContent='🎨 CREA CONCEPT + TEMPLATE'}
+};
+
+$('complexityBtn').onclick=async()=>{
+ $('complexityBtn').disabled=true;$('complexityBtn').textContent='⏳ Analisi in corso…';$('complexityBox').style.display='block';$('complexityBox').textContent='Valuto silhouette, dettagli, simmetria e difficoltà costruttiva…';
+ let fd=new FormData();fd.append('description',$('desc').value);if(file)fd.append('image',file);
+ try{let res=await fetch('/api/complexity',{method:'POST',body:fd});let data=null;try{data=await res.json()}catch(_){throw new Error('Il server ha restituito una risposta non JSON (HTTP '+res.status+'). Controlla la console/PowerShell.')}if(!res.ok||data.mode==='error'){throw new Error(data&&data.error?data.error:'Errore server HTTP '+res.status)}let r=data.result||{};let m=r.metrics||{};let rec=(r.recommendations||[]).map(x=>'• '+x).join('<br>');let reasons=(r.reasons||[]).map(x=>'• '+x).join('<br>');$('complexityBox').innerHTML='<b>Complessità: '+(r.level||'—')+' — '+(r.score??'—')+'/100</b><br>Confidenza: '+Math.round((r.confidence||0)*100)+'%<br><br>'+reasons+(rec?'<br><br><b>Consigli</b><br>'+rec:'');}
+ catch(e){$('complexityBox').textContent='Errore analisi complessità: '+e.message}
+ finally{$('complexityBtn').disabled=false;$('complexityBtn').textContent='🔎 ANALIZZA COMPLESSITÀ'}
+};
+
+$('decomposeBtn').onclick=async()=>{
+ $('decomposeBtn').disabled=true;$('decomposeBtn').textContent='⏳ Scomposizione…';$('decompositionBox').style.display='block';$('decompositionBox').textContent='Identifico corpo, appendici e dettagli…';
+ let fd=new FormData();fd.append('description',$('desc').value);if(file)fd.append('image',file);
+ try{let res=await fetch('/api/decompose',{method:'POST',body:fd});let data=await res.json();let r=data.result||{};let parts=r.parts||[];let rows=parts.map(p=>`• <b>${p.label}</b> — ${p.category}/${p.role} — ${Math.round((p.confidence||0)*100)}%${p.symmetry_group?' — simmetria: '+p.symmetry_group:''}`).join('<br>');$('decompositionBox').innerHTML='<b>Soggetto: '+(r.subject||'—')+'</b><br>Confidenza globale: '+Math.round((r.overall_confidence||0)*100)+'%<br><br>'+rows+(r.notes?'<br><br>'+r.notes:'');}
+ catch(e){$('decompositionBox').textContent='Errore scomposizione: '+e.message}
+ finally{$('decomposeBtn').disabled=false;$('decomposeBtn').textContent='🧩 SCOMPONI SOGGETTO'}
+};
+
+$('go').onclick=async()=>{
+ $('bar').style.width='15%';$('status').textContent='Comprensione del soggetto e compilazione del progetto…';
+ try{
+  let fd=new FormData();fd.append('description',$('desc').value);fd.append('height_cm',$('height').value);fd.append('hook_mm',$('hook').value);fd.append('level',$('level').value);fd.append('style',$('style').value);fd.append('stitches10',$('spc').value);fd.append('rounds10',$('rpc').value);if(file)fd.append('image',file);
+  $('bar').style.width='45%';
+  let res=await fetch('/api/generate',{method:'POST',body:fd});let data=await res.json();
+  if(!res.ok||data.mode==='error')throw new Error(data.error||'Errore nella generazione.');
+  $('bar').style.width='100%';render(data.result,data.mode,data.warning);
+  let status=data.result&&data.result.pipeline_status;
+  $('status').textContent=status==='PASS'?'Pipeline core completata e validata.':(status==='REVIEW'?'Pipeline completata ma richiede revisione.':'Generazione completata in modalità demo/fallback.');
+ }catch(e){$('status').textContent='Errore: '+e.message;$('bar').style.width='0%'}
+};
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.t).classList.add('active')});
+$('txt').onclick=()=>{if(!result)return;let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([result.pattern],{type:'text/plain'}));a.download='amigurumi-pattern.txt';a.click()};
+$('json').onclick=()=>{if(!result)return;let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(result,null,2)],{type:'application/json'}));a.download='amigurumi-project.json';a.click()};
+$('print').onclick=()=>window.print();
+</script>
+</body></html>

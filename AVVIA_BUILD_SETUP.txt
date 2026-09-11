@@ -1,0 +1,11 @@
+AMIGURUMI AI 0.7.2 - CREAZIONE SETUP WINDOWS
+
+1. Estrai completamente lo ZIP.
+2. Apri la cartella estratta.
+3. Fai doppio clic su:
+   Crea_Installer_Amigurumi_AI_0.7.2.bat
+4. Attendi la fine del build.
+5. Il file atteso è:
+   dist\installer\AmigurumiAI-Setup-0.7.2.exe
+
+Il controllo finale verifica esplicitamente il nome dell'installer 0.7.2.

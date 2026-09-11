@@ -1,0 +1,9 @@
+AMIGURUMI AI 0.7.2 - CREAZIONE SETUP WINDOWS
+
+Avvia:
+   Crea_Installer_Amigurumi_AI_0.7.2.bat
+
+Output atteso:
+   dist\installer\AmigurumiAI-Setup-0.7.2.exe
+
+Il build usa packaging\build_windows.ps1 e Inno Setup 7.

@@ -1,0 +1,98 @@
+name: Release Windows
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-desktop.txt
+          python -m pip install pyinstaller
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --no-progress -y
+
+      - name: Sync version from tag
+        shell: pwsh
+        run: |
+          $version = '${{ github.ref_name }}'.TrimStart('v')
+          $files = @(
+            'app/main.py',
+            'desktop.py',
+            'packaging/AmigurumiAI.iss',
+            'packaging/build_windows.ps1'
+          )
+          foreach ($file in $files) {
+            $text = Get-Content $file -Raw
+            $text = $text -replace '0\.7\.2', $version
+            $text = $text -replace '0\.7\.3', $version
+            Set-Content -Path $file -Value $text -Encoding UTF8
+          }
+          $env:AMI_VERSION = $version
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          ./packaging/build_windows.ps1
+
+      - name: Verify installer
+        shell: pwsh
+        run: |
+          $version = '${{ github.ref_name }}'.TrimStart('v')
+          $installer = "dist/installer/AmigurumiAI-Setup-$version.exe"
+          if (-not (Test-Path $installer)) { throw "Installer non trovato: $installer" }
+          $hash = (Get-FileHash $installer -Algorithm SHA256).Hash.ToLowerInvariant()
+          "SHA256=$hash" | Out-File -FilePath sha256.txt -Encoding ascii
+          "VERSION=$version" | Out-File -FilePath version.txt -Encoding ascii
+          Write-Host "Installer: $installer"
+          Write-Host "SHA256: $hash"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            dist/installer/AmigurumiAI-Setup-*.exe
+            sha256.txt
+
+      - name: Publish update manifest
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = '${{ github.ref_name }}'.TrimStart('v')
+          $hash = (Get-Content sha256.txt).Split('=')[1].Trim()
+          $manifest = @{
+            version = $version
+            installer_url = "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AmigurumiAI-Setup-$version.exe"
+            sha256 = $hash
+            mandatory = $false
+          } | ConvertTo-Json
+          Set-Content update-manifest.json $manifest -Encoding UTF8
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add core008/update-manifest.json
+          git commit -m "chore: publish update manifest $version" || exit 0
+          git push origin HEAD:main

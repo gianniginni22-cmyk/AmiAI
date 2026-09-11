@@ -1,0 +1,9 @@
+Correzione V3 - test E2E auto-update 0.6.2.2 -> 0.6.2.3
+
+Correzioni incluse:
+1. Il test richiama build_windows.ps1 con il call operator (&), senza aprire un secondo PowerShell.
+2. AmigurumiAI-Updater.exe viene compilato senza console, quindi non apre una nuova finestra console durante l'auto-update.
+3. Il test e il messaggio finale sono ASCII-safe per evitare errori di parsing dovuti a encoding/copia-incolla.
+4. In caso di timeout del download, il test stampa le ultime 40 righe del log updater, invece di lasciare solo un timeout generico.
+5. desktop.py usa il manifest pubblico come default anche quando l'app viene avviata normalmente da collegamento; la variabile AMIGURUMI_UPDATE_MANIFEST resta un override utile per i test.
+6. Nessuna modifica al manifest pubblico, all'installer 0.6.2.3 o allo SHA atteso.

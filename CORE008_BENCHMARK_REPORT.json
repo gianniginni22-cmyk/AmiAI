@@ -1,0 +1,392 @@
+{
+  "cases": [
+    {
+      "name": "teddy",
+      "reference_match": 100.0,
+      "pattern_validity": 91.3,
+      "pass": true,
+      "quality": {
+        "score": 91.3,
+        "status": "PASS",
+        "errors": [],
+        "warnings": [
+          "L'altezza geometrica complessiva differisce molto dal target; il campione reale può richiedere una scala."
+        ],
+        "metrics": {
+          "vision_confidence": 0.9,
+          "max_round_delta": 6.0,
+          "invalid_rounds": 0.0,
+          "height_relative_error": 0.667,
+          "component_scores": {
+            "visione": 90.0,
+            "struttura_grafo": 100.0,
+            "geometria": 100.0,
+            "conteggi_maglie": 100.0,
+            "giunzioni": 100.0,
+            "scala_target": 33.333
+          },
+          "component_weights": {
+            "visione": 0.2,
+            "struttura_grafo": 0.2,
+            "geometria": 0.15,
+            "conteggi_maglie": 0.2,
+            "giunzioni": 0.15,
+            "scala_target": 0.1
+          }
+        },
+        "gates": {
+          "graph_valid": true,
+          "stitch_counts": true,
+          "joints_resolvable": true,
+          "has_geometry": true,
+          "confidence_acceptable": true
+        }
+      },
+      "role_score": 100.0,
+      "feature_score": 100.0,
+      "subject_score": 100.0,
+      "nodes": 8,
+      "edges": 7,
+      "techniques": [
+        "disco_sc",
+        "spirale_sc",
+        "tubo_sc"
+      ],
+      "independent_gates": {
+        "quality": true,
+        "technique": true,
+        "topology": true,
+        "assembly": true,
+        "pattern": true,
+        "construction_metadata": true
+      },
+      "pattern_present": true,
+      "assembly_present": true
+    },
+    {
+      "name": "dinosaur",
+      "reference_match": 100.0,
+      "pattern_validity": 93.3,
+      "pass": true,
+      "quality": {
+        "score": 93.3,
+        "status": "PASS",
+        "errors": [],
+        "warnings": [
+          "L'altezza geometrica complessiva differisce molto dal target; il campione reale può richiedere una scala."
+        ],
+        "metrics": {
+          "vision_confidence": 0.9,
+          "max_round_delta": 6.0,
+          "invalid_rounds": 0.0,
+          "height_relative_error": 0.467,
+          "component_scores": {
+            "visione": 90.0,
+            "struttura_grafo": 100.0,
+            "geometria": 100.0,
+            "conteggi_maglie": 100.0,
+            "giunzioni": 100.0,
+            "scala_target": 53.333
+          },
+          "component_weights": {
+            "visione": 0.2,
+            "struttura_grafo": 0.2,
+            "geometria": 0.15,
+            "conteggi_maglie": 0.2,
+            "giunzioni": 0.15,
+            "scala_target": 0.1
+          }
+        },
+        "gates": {
+          "graph_valid": true,
+          "stitch_counts": true,
+          "joints_resolvable": true,
+          "has_geometry": true,
+          "confidence_acceptable": true
+        }
+      },
+      "role_score": 100.0,
+      "feature_score": 100.0,
+      "subject_score": 100.0,
+      "nodes": 9,
+      "edges": 8,
+      "techniques": [
+        "cono_sc",
+        "spirale_sc",
+        "tubo_sc"
+      ],
+      "independent_gates": {
+        "quality": true,
+        "technique": true,
+        "topology": true,
+        "assembly": true,
+        "pattern": true,
+        "construction_metadata": true
+      },
+      "pattern_present": true,
+      "assembly_present": true
+    },
+    {
+      "name": "beaver",
+      "reference_match": 100.0,
+      "pattern_validity": 92.0,
+      "pass": true,
+      "quality": {
+        "score": 92.0,
+        "status": "PASS",
+        "errors": [],
+        "warnings": [
+          "L'altezza geometrica complessiva differisce molto dal target; il campione reale può richiedere una scala."
+        ],
+        "metrics": {
+          "vision_confidence": 0.9,
+          "max_round_delta": 6.0,
+          "invalid_rounds": 0.0,
+          "height_relative_error": 0.6,
+          "component_scores": {
+            "visione": 90.0,
+            "struttura_grafo": 100.0,
+            "geometria": 100.0,
+            "conteggi_maglie": 100.0,
+            "giunzioni": 100.0,
+            "scala_target": 40.0
+          },
+          "component_weights": {
+            "visione": 0.2,
+            "struttura_grafo": 0.2,
+            "geometria": 0.15,
+            "conteggi_maglie": 0.2,
+            "giunzioni": 0.15,
+            "scala_target": 0.1
+          }
+        },
+        "gates": {
+          "graph_valid": true,
+          "stitch_counts": true,
+          "joints_resolvable": true,
+          "has_geometry": true,
+          "confidence_acceptable": true
+        }
+      },
+      "role_score": 100.0,
+      "feature_score": 100.0,
+      "subject_score": 100.0,
+      "nodes": 9,
+      "edges": 8,
+      "techniques": [
+        "dettaglio/applicazione",
+        "spirale_sc",
+        "tubo_sc"
+      ],
+      "independent_gates": {
+        "quality": true,
+        "technique": true,
+        "topology": true,
+        "assembly": true,
+        "pattern": true,
+        "construction_metadata": true
+      },
+      "pattern_present": true,
+      "assembly_present": true
+    },
+    {
+      "name": "mushroom",
+      "reference_match": 100.0,
+      "pattern_validity": 92.7,
+      "pass": true,
+      "quality": {
+        "score": 92.7,
+        "status": "PASS",
+        "errors": [],
+        "warnings": [
+          "Arco e1: diametri di giunzione diversi di 1.8 cm.",
+          "Simmetria spots: 5 elementi, gruppo non bilanciato.",
+          "L'altezza geometrica complessiva differisce molto dal target; il campione reale può richiedere una scala."
+        ],
+        "metrics": {
+          "vision_confidence": 0.9,
+          "max_round_delta": 6.0,
+          "invalid_rounds": 0.0,
+          "height_relative_error": 0.533,
+          "component_scores": {
+            "visione": 90.0,
+            "struttura_grafo": 100.0,
+            "geometria": 100.0,
+            "conteggi_maglie": 100.0,
+            "giunzioni": 100.0,
+            "scala_target": 46.667
+          },
+          "component_weights": {
+            "visione": 0.2,
+            "struttura_grafo": 0.2,
+            "geometria": 0.15,
+            "conteggi_maglie": 0.2,
+            "giunzioni": 0.15,
+            "scala_target": 0.1
+          }
+        },
+        "gates": {
+          "graph_valid": true,
+          "stitch_counts": true,
+          "joints_resolvable": true,
+          "has_geometry": true,
+          "confidence_acceptable": true
+        }
+      },
+      "role_score": 100.0,
+      "feature_score": 100.0,
+      "subject_score": 100.0,
+      "nodes": 7,
+      "edges": 6,
+      "techniques": [
+        "applicazione",
+        "dettaglio/applicazione",
+        "spirale_sc"
+      ],
+      "independent_gates": {
+        "quality": true,
+        "technique": true,
+        "topology": true,
+        "assembly": true,
+        "pattern": true,
+        "construction_metadata": true
+      },
+      "pattern_present": true,
+      "assembly_present": true
+    },
+    {
+      "name": "robot",
+      "reference_match": 100.0,
+      "pattern_validity": 92.0,
+      "pass": true,
+      "quality": {
+        "score": 92.0,
+        "status": "PASS",
+        "errors": [],
+        "warnings": [
+          "L'altezza geometrica complessiva differisce molto dal target; il campione reale può richiedere una scala."
+        ],
+        "metrics": {
+          "vision_confidence": 0.9,
+          "max_round_delta": 6.0,
+          "invalid_rounds": 0.0,
+          "height_relative_error": 0.6,
+          "component_scores": {
+            "visione": 90.0,
+            "struttura_grafo": 100.0,
+            "geometria": 100.0,
+            "conteggi_maglie": 100.0,
+            "giunzioni": 100.0,
+            "scala_target": 40.0
+          },
+          "component_weights": {
+            "visione": 0.2,
+            "struttura_grafo": 0.2,
+            "geometria": 0.15,
+            "conteggi_maglie": 0.2,
+            "giunzioni": 0.15,
+            "scala_target": 0.1
+          }
+        },
+        "gates": {
+          "graph_valid": true,
+          "stitch_counts": true,
+          "joints_resolvable": true,
+          "has_geometry": true,
+          "confidence_acceptable": true
+        }
+      },
+      "role_score": 100.0,
+      "feature_score": 100.0,
+      "subject_score": 100.0,
+      "nodes": 8,
+      "edges": 7,
+      "techniques": [
+        "cono_sc",
+        "spirale_sc",
+        "tubo_sc"
+      ],
+      "independent_gates": {
+        "quality": true,
+        "technique": true,
+        "topology": true,
+        "assembly": true,
+        "pattern": true,
+        "construction_metadata": true
+      },
+      "pattern_present": true,
+      "assembly_present": true
+    },
+    {
+      "name": "bird",
+      "reference_match": 100.0,
+      "pattern_validity": 92.5,
+      "pass": true,
+      "quality": {
+        "score": 92.5,
+        "status": "PASS",
+        "errors": [],
+        "warnings": [
+          "L'altezza geometrica complessiva differisce molto dal target; il campione reale può richiedere una scala."
+        ],
+        "metrics": {
+          "vision_confidence": 0.9,
+          "max_round_delta": 6.0,
+          "invalid_rounds": 0.0,
+          "height_relative_error": 0.547,
+          "component_scores": {
+            "visione": 90.0,
+            "struttura_grafo": 100.0,
+            "geometria": 100.0,
+            "conteggi_maglie": 100.0,
+            "giunzioni": 100.0,
+            "scala_target": 45.333
+          },
+          "component_weights": {
+            "visione": 0.2,
+            "struttura_grafo": 0.2,
+            "geometria": 0.15,
+            "conteggi_maglie": 0.2,
+            "giunzioni": 0.15,
+            "scala_target": 0.1
+          }
+        },
+        "gates": {
+          "graph_valid": true,
+          "stitch_counts": true,
+          "joints_resolvable": true,
+          "has_geometry": true,
+          "confidence_acceptable": true
+        }
+      },
+      "role_score": 100.0,
+      "feature_score": 100.0,
+      "subject_score": 100.0,
+      "nodes": 5,
+      "edges": 4,
+      "techniques": [
+        "lamina_sc",
+        "spirale_sc",
+        "tubo_sc"
+      ],
+      "independent_gates": {
+        "quality": true,
+        "technique": true,
+        "topology": true,
+        "assembly": true,
+        "pattern": true,
+        "construction_metadata": true
+      },
+      "pattern_present": true,
+      "assembly_present": true
+    }
+  ],
+  "case_count": 6,
+  "passed_cases": 6,
+  "failed_cases": 0,
+  "reference_match_avg": 100.0,
+  "pattern_validity_avg": 92.3,
+  "pass": true,
+  "benchmark": "CORE-008",
+  "criterion": "Tutti i casi devono superare reference_match, pattern_validity e i gate strutturali indipendenti."
+}
